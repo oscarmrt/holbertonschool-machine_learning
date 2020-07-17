@@ -18,4 +18,4 @@ def mat_mul(mat1, mat2):
                     result[x][y] += mat1[x][z] * mat2[z][y]
         return result
     else:
-        return None
+        result = None
