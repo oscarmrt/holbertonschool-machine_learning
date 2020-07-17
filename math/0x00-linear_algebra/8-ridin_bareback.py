@@ -8,13 +8,14 @@ def mat_mul(mat1, mat2):
     mat1n = len(mat1[0])
     mat2m = len(mat2)
     mat2n = len(mat2[0])
-    result = [[0, 0, 0, 0],
-              [0, 0, 0, 0],
-              [0, 0, 0, 0]]
+    result = []
     if mat1n == mat2m:
         for x in range(mat1m):
-            for y in range(mat2n):
-                for z in range(mat2m):
-                    result[x][y] += mat1[x][z] * mat2[z][y]
+            line = [0] * mat2n
+            result.append(line)
+        for y in range(len(result)):
+            for z in range(len(result[0])):
+                for i in range(mat1n):
+                    result[y][z] += mat1[y][i] * mat2[i][z]
         return result
     return None
