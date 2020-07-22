@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 np.random.seed(5)
-fruit = np.random.randint(0, 20, (4,3))
+fruit = np.random.randint(0, 20, (4, 3))
 
 fruits = np.append(np.zeros((1, 3)), fruit.cumsum(axis=0), axis=0)
 fruits_name = ['apples', 'bananas', 'orange', 'peaches']
