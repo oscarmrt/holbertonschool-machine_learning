@@ -30,3 +30,13 @@ class Poisson():
             factK *= x
         pmfP = (Poisson.e ** (-self.lambtha)) * (self.lambtha ** k) / factK
         return pmfP
+
+    def cdf(self, k):
+        """Calculates the value of the CDF for a given number of “successes”"""
+        k = int(k)
+        if k < 0:
+            return 0
+        cdfP = 0
+        for x in range(k + 1):
+            cdfP += self.pmf(x)
+        return cdfP
