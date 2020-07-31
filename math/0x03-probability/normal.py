@@ -37,3 +37,12 @@ class Normal():
         fctr = float(1 / ((self.stddev) * (2 * Normal.pi) ** .5))
         exp = -.5 * (((x - self.mean) / self.stddev) ** 2)
         return float(fctr * (Normal.e ** exp))
+
+    def cdf(self, x):
+        """Calculates the value of the CDF for a given x-value"""
+        xf = (x - self.mean) / (self.stddev * (2 ** (.5)))
+        erf = (2 / (Normal.pi ** (.5)) * (xf - ((xf ** 3) / 3) +
+                                               ((xf ** 5) / 10) -
+                                               ((xf ** 7) / 42) +
+                                               ((xf ** 9) / 216)))
+        return ((1 + erf) / 2)
