@@ -22,11 +22,17 @@ class Binomial():
             if len(data) < 2:
                 raise ValueError('data must contain multiple values')
             else:
-                mean = sum(data) / len(data)
-                variance = sum([((x - mean) ** 2) for x in data]) / len(data)
-                self.p = 1 - variance / mean
-                self.n = int(round(mean / self.p))
-                self.p = float(mean / self.n)
+                mean = sum(data)/len(data)
+                var = sum((d - mean)**2 for d in data)/len(data)
+                p = 1.0 - var/mean
+                n = sum(d/p for d in data)/len(data)
+                if n % 1 < 0.5:
+                    n = int(n)
+                else:
+                    n = int(n + 1)
+                p = sum(d/n for d in data)/len(data)
+                self.n = n
+                self.p = float(p)
 
     def pmf(self, k):
         """Calculates the value of the PMF for a given number of “successes”"""
