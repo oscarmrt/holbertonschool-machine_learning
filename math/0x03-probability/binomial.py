@@ -16,16 +16,17 @@ class Binomial():
                 raise ValueError('p must be greater than 0 and less than 1')
             self.n = int(n)
             self.p = float(p)
-        elif type(data) is not list:
-            raise TypeError('data must be a list')
-        elif len(data) < 2:
-            raise ValueError('data must contain multiple values')
         else:
-            mean = sum(data) / len(data)
-            variance = sum([((x - mean) ** 2) for x in data]) / len(data)
-            self.p = 1 - variance / mean
-            self.n = int(round(mean / self.p))
-            self.p = float(mean / self.n)
+            if type(data) is not list:
+                raise TypeError('data must be a list')
+            elif len(data) < 2:
+                raise ValueError('data must contain multiple values')
+            else:
+                mean = sum(data) / len(data)
+                variance = sum([((x - mean) ** 2) for x in data]) / len(data)
+                self.p = 1 - variance / mean
+                self.n = int(round(mean / self.p))
+                self.p = float(mean / self.n)
 
     def pmf(self, k):
         """Calculates the value of the PMF for a given number of “successes”"""
