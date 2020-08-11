@@ -9,6 +9,8 @@ def one_hot_encode(Y, classes):
         return None
     elif classes <= np.argmax(Y):
         return None
+    elif not isinstance(Y, np.ndarray):
+        return None
     else:
         onehot_encoder = np.zeros((classes, len(Y)))
         onehot_encoder[Y, np.arange(len(Y))] = 1
