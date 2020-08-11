@@ -118,6 +118,8 @@ class DeepNeuralNetwork():
                 stps.append(x)
             if x < iterations:
                 self.gradient_descent(Y, self.__cache, alpha)
+        if verbose:
+            print('Cost after {} iterations: {}'.format(x, cost))
         if graph is True:
             plt.plot(np.squeeze(stps), np.squeeze(csts))
             plt.ylabel("cost")
