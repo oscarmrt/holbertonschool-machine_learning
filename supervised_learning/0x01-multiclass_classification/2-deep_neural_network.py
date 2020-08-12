@@ -1,91 +1,96 @@
 #!/usr/bin/env python3
-""" Creates a deep neural network. """
+""" defines a deep neural network performing binary classification"""
 import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 
 
-class DeepNeuralNetwork:
-    """ Deep neural network class. """
+class DeepNeuralNetwork():
+    """ defines a deep neural network performing binary classification
+    using He initialization sqrt(2./lyrs_dims[l-1]).)"""
 
-    def __init__(self, nx, layers):
-        """ Initializer for the deep neural network. """
-        if type(nx) != int:
-            raise TypeError('nx must be an integer')
+    def __init__(self, nx, lyrs):
+        """Constructor for class DeepNeuralNetwork"""
+        if type(nx) is not int:
+            raise TypeError("nx must be an integer")
         if nx < 1:
-            raise ValueError('nx must be a positive integer')
-        if type(layers) != list or not layers:
-            raise TypeError('layers must be a list of positive integers')
-        self.__L = 0
+            raise ValueError("nx must be a positive integer")
+        if type(lyrs) is not list or not lyrs:
+            raise TypeError("lyrs must be a list of positive integers")
+
+        self.__L = len(lyrs)
         self.__cache = {}
         self.__weights = {}
-        rand = np.random.randn
-        for idx, neurons in enumerate(layers):
-            if type(neurons) != int or neurons <= 0:
-                raise TypeError('layers must be a list of positive integers')
-            if idx == 0:
-                self.weights['W1'] = rand(neurons, nx) * np.sqrt(2 / nx)
+
+        for x in range(self.__L):
+            if type(lyrs[x]) is not int or lyrs[x] <= 0:
+                raise TypeError('lyrs must be a list of positive integers')
+
+            wi = 'W'+str(x + 1)
+            bi = 'b'+str(x + 1)
+            if x == 0:
+                self.__weights[wi] = np.random.randn(lyrs[x], nx)\
+                                   * np.sqrt(2./nx)
             else:
-                p = layers[idx - 1]
-                r = rand(neurons, p)
-                self.weights["W{}".format(idx + 1)] = r * np.sqrt(2 / p)
-            self.__L += 1
-            self.weights["b{}".format(idx + 1)] = np.zeros((neurons, 1))
+                self.__weights[wi] = np.random.randn(lyrs[x], lyrs[x-1])\
+                                   * np.sqrt(2/lyrs[x-1])
+            self.__weights[bi] = np.zeros((lyrs[x], 1))
 
     @property
     def L(self):
-        """ Getter for L (Number of layers). """
+        """ getter function for lyrs in neural network"""
         return self.__L
 
     @property
     def cache(self):
-        """ Getter for cache. """
+        """getter function for intermediate values of network"""
         return self.__cache
 
     @property
     def weights(self):
-        """ Getter for weights. """
+        """ getter function for Weights and biased of network"""
         return self.__weights
 
     def forward_prop(self, X):
-        """ Forward propagation of the network. """
+        """Calculates the forward propagation of the neural network"""
         self.__cache['A0'] = X
-        for i in range(self.L):
-            w = self.weights['W{}'.format(i + 1)]
-            b = self.weights['b{}'.format(i + 1)]
-            p_a = self.cache['A' + str(i)]
-            A = 1 / (1 + np.exp(-(np.matmul(w, p_a) + b)))
-            self.__cache["A" + str(i + 1)] = A
-        return (self.__cache["A" + str(i + 1)], self.cache)
+        for lyr in range(1, self.__L + 1):
+            xi = self.__cache['A'+str(lyr-1)]
+            z = np.dot(self.__weights['W'+str(lyr)], xi) +\
+                self.__weights['b'+str(lyr)]
+            sigmoid = 1 / (1 + np.exp(-z))
+            self.__cache['A'+str(lyr)] = sigmoid
+        return sigmoid, self.__cache
 
     def cost(self, Y, A):
-        """ Calculates the cost of the network. """
+        """Calculates the cost of the model using logistic regression"""
         m = Y.shape[1]
-        c = np.sum(-Y * np.log(A) - (1 - Y) * np.log(1.0000001 - A)) / m
-        return c
+        cost = - (1 / m) * np.sum(
+            np.multiply(
+                Y, np.log(A)) + np.multiply(
+                1 - Y, np.log(1.0000001 - A)))
+        return cost
 
     def evaluate(self, X, Y):
-        """ Evaluates the output of the network. """
-        A, _ = self.forward_prop(X)
-        c = self.cost(Y, A)
-        return (np.where(A >= 0.5, 1, 0), c)
+        """Evaluates the neural network’s predictions"""
+        prediction, cache = self.forward_prop(X)
+        cost = self.cost(Y, prediction)
+        return np.where(prediction >= 0.5, 1, 0), cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
-        """ Calculates the gradient descent. """
+        """Calculates one pass of gradient descent
+        on the neural network"""
         m = Y.shape[1]
-        oldW = self.weights.copy()
-        for i in range(self.L, 0, -1):
-            A = cache["A" + str(i)]
-            if i == self.L:
-                dz = A - Y
-            else:
-                dz = np.matmul(oldW["W" + str(i + 1)].T, dz) * A * (1 - A)
-            dw = np.matmul(dz, cache["A" + str(i - 1)].T) / m
-            db = np.sum(dz, axis=1, keepdims=True) / m
-            w = oldW["W" + str(i)]
-            b = oldW["b" + str(i)]
-            self.__weights["W" + str(i)] = w - alpha * dw
-            self.__weights["b" + str(i)] = b - alpha * db
+        dz = cache['A'+str(self.__L)] - Y
+        for i in range(self.__L, 0, -1):
+            db = (1 / m) * np.sum(dz, axis=1, keepdims=True)
+            dW = (1 / m) * np.matmul(cache['A'+str(i-1)], dz.T)
+            dz = np.matmul(self.__weights['W'+str(i)].T, dz) *\
+                (cache['A'+str(i-1)] * (1 - cache['A'+str(i-1)]))
+            self.__weights['W'+str(i)] = self.__weights['W'+str(i)] -\
+                (alpha * dW).T
+            self.__weights['b'+str(i)] = self.__weights['b'+str(i)] -\
+                (alpha * db)
 
     def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True,
               graph=True, step=100):
