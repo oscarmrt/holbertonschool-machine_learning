@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Program that calculates the weighted moving average of a data set"""
-
 import numpy as np
 
 
