@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 """Program that updates a variable
 using the RMSProp optimization algorithm"""
