@@ -13,5 +13,5 @@ def model(Data_train, Data_valid, layers, activations,
     """Function that builds, trains, and saves a neural
     network model in tensorflow using Adam optimization,
     mini-batch gradient descent, learning rate decay,
-    and batch normalization"""
+    and batch normalization."""
     pass
