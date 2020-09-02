@@ -13,18 +13,22 @@ def train_model(network, data, labels, batch_size, epochs,
         callback = [K.callbacks.EarlyStopping(monitor='val_loss',
                                               patience=patience)]
         history = network.fit(x=data, y=labels, batch_size=batch_size,
-                              epochs=epochs, verbose=verbose, shuffle=shuffle,
+                              verbose=verbose, epochs=epochs, shuffle=shuffle,
                               validation_data=validation_data,
                               callbacks=callback)
     if learning_rate_decay and validation_data:
-        callback.append(K.callbacks.LearningRateScheduler((alpha / (1 +
-                        decay_rate * epoch)), verbose=1))
+        def scheduler(epoch):
+            """Function keeps the initial learning rate for the first
+            ten epochs and decreases it exponentially after that"""
+            return alpha / (1 + decay_rate * epoch)
+        callback.append(K.callbacks.LearningRateScheduler(scheduler,
+                                                          verbose=1))
         history = network.fit(x=data, y=labels, batch_size=batch_size,
-                              epochs=epochs, verbose=verbose, shuffle=shuffle,
+                              verbose=verbose, epochs=epochs, shuffle=shuffle,
                               validation_data=validation_data,
                               callbacks=callback)
     else:
         history = network.fit(x=data, y=labels, batch_size=batch_size,
-                              epochs=epochs, verbose=verbose, shuffle=shuffle,
-                              validation_data=validation_data)
+                              epochs=epochs, validation_data=validation_data,
+                              verbose=verbose, shuffle=shuffle)
     return history
