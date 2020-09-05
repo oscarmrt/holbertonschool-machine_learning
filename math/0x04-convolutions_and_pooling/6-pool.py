@@ -14,7 +14,7 @@ def pool(images, kernel_shape, stride, mode='max'):
     sh = stride[0]
     sw = stride[1]
     if mode == 'max':
-        pooling = no.max
+        pooling = np.max
     else:
         pooling = np.average
     newh = int(((h - kh) / sh)) + 1
