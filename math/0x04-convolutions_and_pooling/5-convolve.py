@@ -30,7 +30,7 @@ def convolve(images, kernels, padding='same', stride=(1, 1)):
     imagePad = np.pad(images, pad_width=pad, mode='constant')
     for i in range(newh):
         for j in range(neww):
-            for q in range(nc):
+            for k in range(nc):
                 x = i * sh
                 y = j * sw
                 image = imagePad[:, x:x+kh, y:y+kw, :]
