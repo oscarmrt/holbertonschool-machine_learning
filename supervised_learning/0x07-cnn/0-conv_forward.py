@@ -11,8 +11,8 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
     kh, kw, c_prev, c_new = W.shape
     sh, sw = stride
     if padding == 'same':
-        padh = int((((h_prev - 1) * sh - h_prev + kh) / 2)) + 1
-        padw = int((((w_prev - 1) * sw - w_prev + kw) / 2)) + 1
+        padh = int((((h_prev - 1) * sh - h_prev + kh) / 2))
+        padw = int((((w_prev - 1) * sw - w_prev + kw) / 2))
     else:
         padh = 0
         padw = 0
