@@ -9,7 +9,7 @@ projection_block = __import__('3-projection_block').projection_block
 def resnet50():
     """Function that builds the ResNet-50 architecture as described
     in Deep Residual Learning for Image Recognition (2015)"""
-    XInput = K.Input(shape=(224, 224, 2))
+    XInput = K.Input(shape=(224, 224, 3))
     X = K.layers.Conv2D(64, kernel_size=(7, 7), padding='same', strides=(2, 2),
                         kernel_initializer='he_normal')(XInput)
     X = K.layers.BatchNormalization(axis=3)(X)
