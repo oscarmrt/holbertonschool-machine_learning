@@ -10,7 +10,7 @@ def densenet121(growth_rate=32, compression=1.0):
     """Function that builds the DenseNet-121 architecture as
     described in Densely Connected Convolutional Networks"""
     XInput = K.Input(shape=(224, 224, 3))
-    nb_filter = 664
+    nb_filter = 64
     nb_layers = [6, 12, 24, 16]
     x = K.layers.BatchNormalization(axis=3)(XInput)
     x = K.layers.Activation('relu')(x)
