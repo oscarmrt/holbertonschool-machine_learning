@@ -23,7 +23,7 @@ def determinant(matrix):
             crScaler = AM[i][fd] / AM[fd][fd]
             for j in range(n):
                 AM[i][j] = AM[i][j] - crScaler * AM[fd][j]
-    product = 1.0
+    product = 1
     for i in range(n):
         product *= AM[i][i]
-    return product
+    return round(product)
