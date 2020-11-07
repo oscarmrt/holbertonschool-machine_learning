@@ -14,7 +14,8 @@ def kmeans(X, k, iterations=1000):
     max = np.amax(X, axis=0)
     centroids = np.random.uniform(low=min, high=max, size=(k, d))
     for i in range(iterations):
-        clss = np.argmin(np.linalg.norm(X[:, None] - centroids, axis=-1), axis=-1)
+        clss = np.argmin(np.linalg.norm(X[:, None] - centroids, axis=-1),
+                         axis=-1)
         newCentroid = np.copy(centroids)
         for c in range(k):
             if c not in clss:
@@ -24,6 +25,6 @@ def kmeans(X, k, iterations=1000):
         if np.array_equal(newCentroid, centroids):
             return (centroids, clss)
         else:
-            Centroids = newCentroid
+            centroids = newCentroid
     clss = np.argmin(np.linalg.norm(X[:, None] - centroids, axis=-1), axis=-1)
     return (centroids, clss)
