@@ -39,4 +39,4 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
     lh = np.array(li)
     b = np.array(bi)
     top = np.argmin(b)
-    return (ki[top], tup[top], lh, b)
+    return ki[top], tup[top], lh, b

@@ -12,24 +12,27 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
     maximization for a GMM"""
     if type(X) is not np.ndarray or len(X.shape) != 2:
         return None, None, None, None, None
-    if type(k) is not int or k < 1:
+    if type(k) is not int or type(iterations) is not int:
         return None, None, None, None, None
-    if type(iterations) is not int or iterations < 1:
+    if k <= 0 or iterations <= 0:
         return None, None, None, None, None
     if type(tol) is not float or tol < 0:
         return None, None, None, None, None
     if type(verbose) is not bool:
         return None, None, None, None, None
+    n, d = X.shape
     pi, m, S = initialize(X, k)
-    l_prev = 0
+    g, ll = expectation(X, pi, m, S)
+    ll_old = 0
+    text = 'Log Likelihood after {} iterations: {}'
     for i in range(iterations):
-        g, lh = expectation(X, pi, m, S)
-        if verbose:
-            if i % 10 == 0 or abs(lh - l_prev) <= tol or i + 1 == iterations:
-                print("Log Likelihood after {} "
-                      "iterations: {}".format(i, round(lh, 5)))
+        if verbose and i % 10 == 0:
+            print(text.format(i, ll.round(5)))
         pi, m, S = maximization(X, g)
-        if abs(lh - l_prev) <= tol:
+        g, ll = expectation(X, pi, m, S)
+        if np.abs(ll_old - ll) <= tol:
             break
-        l_prev = lh
-    return pi, m, S, g, lh
+        ll_old = ll
+    if verbose:
+        print(text.format(i + 1, ll.round(5)))
+    return pi, m, S, g, ll
