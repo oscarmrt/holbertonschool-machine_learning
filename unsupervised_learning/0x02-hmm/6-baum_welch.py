@@ -27,7 +27,7 @@ def forward(Observation, Emission, Transition, Initial):
         F[:, t] = np.multiply(Emission[:, Observation[t]],
                               np.dot(Transition.T, F[:, t - 1]))
     P = F[:, T - 1].sum()
-    return P, F
+    return F
 
 
 def backward(Observation, Emission, Transition, Initial):
@@ -57,7 +57,7 @@ def backward(Observation, Emission, Transition, Initial):
                          np.multiply(Emission[:,
                                      Observation[t + 1]], B[:, t + 1]))
     P = np.dot(Initial.T, np.multiply(Emission[:, Observation[0]], B[:, 0]))
-    return (P, B)
+    return (B)
 
 
 def baum_welch(Observations, Transition, Emission, Initial, iterations=1000):
