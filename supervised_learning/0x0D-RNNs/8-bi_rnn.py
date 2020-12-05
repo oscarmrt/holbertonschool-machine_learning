@@ -20,4 +20,4 @@ def bi_rnn(bi_cell, X, h_0, h_t):
     Hb = np.array(Hb)
     H = np.concatenate((Hf, Hb), axis=-1)
     Y = bi_cell.output(H)
-    return (H, Z)
+    return (H, Y)
