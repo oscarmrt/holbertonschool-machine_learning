@@ -37,4 +37,4 @@ class BidirectionalCell():
         Y = []
         for i in range(T):
             Y.append(self.softmax(np.dot(H[i], self.Wy) + self.by))
-        return np.array(z)
+        return np.array(Y)
