@@ -12,7 +12,7 @@ def deep_rnn(rnn_cells, X, h_0):
         Htemp = []
         x_t = X[x]
         for i, j in enumerate(rnn_cells):
-            h, y = j.forward(H[i][i], x_t)
+            h, y = j.forward(H[x][i], x_t)
             Htemp.append(h)
             x_t = h
         H.append(Htemp)
