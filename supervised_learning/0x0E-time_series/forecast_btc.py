@@ -10,15 +10,15 @@ import os
 
 def multivariate_data(dataset, target, start_index, end_index, history_size,
                       target_size, step, single_step=False):
-    """creates slide windows in an array """
+    """Function that performs multivariate data"""
     data = []
     labels = []
     start_index = start_index + history_size
     if end_index is None:
         end_index = len(dataset) - target_size
     for i in range(start_index, end_index):
-        indices = range(i - history_size, i, step)
-        data.append(dataset[indices])
+        indexes = range(i - history_size, i, step)
+        data.append(dataset[indexes])
     if single_step:
         labels.append(target[i + target_size])
     else:
@@ -28,21 +28,21 @@ def multivariate_data(dataset, target, start_index, end_index, history_size,
 
 def univariate_data(dataset, start_index, end_index, history_size,
                     target_size):
-    """creates slide windows in an array"""
+    """Function that performs univariate data"""
     data = []
     labels = []
     start_index = start_index + history_size
     if end_index is None:
         end_index = len(dataset) - target_size
     for i in range(start_index, end_index):
-        indices = range(i - history_size, i)
-        data.append(np.reshape(dataset[indices], (history_size, 1)))
+        indexes = range(i - history_size, i)
+        data.append(np.reshape(dataset[indexes], (history_size, 1)))
         labels.append(dataset[i + target_size])
     return np.array(data), np.array(labels)
 
 
 def univariate():
-    """univariate"""
+    """Function that performs univariate without parameters"""
     univariate_past_history = 24
     univariate_future_target = 0
     x_train_uni, y_train_uni = univariate_data(uni_data, 0, TRAIN_SPLIT,
@@ -60,7 +60,7 @@ def univariate():
 
 
 def multivariate():
-    """multivariate"""
+    """Function that performs multivariate without parameters"""
     df_mul.plot(subplots=True)
     dataset = df_mul.values
     data_mean = dataset[:TRAIN_SPLIT].mean(axis=0)
