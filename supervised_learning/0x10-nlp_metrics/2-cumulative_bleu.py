@@ -21,7 +21,7 @@ def ngram_bleu(references, sentence, n):
     c = len(sentence)
     r_list = np.array([abs(len(ref) - c) for ref in references])
     mask = np.where(r_list == r_list.min())
-    r = np.array([len(ref) for ref in references])[mask].sum()
+    r = np.array([len(ref) for ref in references])[mask].min()
     cn = create_ngram(sentence, n)
     candidate = {x: 0 for x in cn}
     references = [create_ngram(ref, n) for ref in references]
@@ -35,11 +35,7 @@ def ngram_bleu(references, sentence, n):
             if match > max_match:
                 max_match = match
     P = max_match / len(cn)
-    if c > r:
-        BP = 1
-    else:
-        BP = np.exp(1-(r / c))
-    return BP * P
+    return P, r
 
 
 def cumulative_bleu(references, sentence, n):
