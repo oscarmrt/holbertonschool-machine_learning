@@ -5,15 +5,15 @@ import numpy as np
 
 def create_ngram(sentence, n):
         """Function that creates an ngram"""
-            new_sentence = []
-            for i in range(len(sentence) - n + 1):
-                n_gram = ""
-                for j in range(n):
-                    n_gram += sentence[i + j]
-                    if not j + 1 == n:
-                        n_gram += " "
-                new_sentence.append(n_gram)
-            return new_sentence
+        new_sentence = []
+        for i in range(len(sentence) - n + 1):
+            n_gram = ""
+            for j in range(n):
+                n_gram += sentence[i + j]
+                if not j + 1 == n:
+                    n_gram += " "
+            new_sentence.append(n_gram)
+        return new_sentence
 
 
 def ngram_bleu(references, sentence, n):
