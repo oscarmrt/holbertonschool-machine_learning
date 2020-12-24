@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Program that calculates the n-gram BLEU score for a sentence"""
+"""Program that calculates the cumulative n-gram BLEU score for a sentence"""
 import numpy as np
 
 
@@ -40,3 +40,18 @@ def ngram_bleu(references, sentence, n):
     else:
         BP = np.exp(1-(r / c))
     return BP * P
+
+
+def cumulative_bleu(references, sentence, n):
+    """Function that calculates the cumulative
+    n-gram BLEU score for a sentence"""
+    c = len(sentence)
+    precisions = []
+    for i in range(n):
+        P, r = ngram_bleu(references, sentence, i + 1)
+        precisions.append(P)
+    if c > r:
+        BP = 1
+    else:
+        BP = np.exp(1-(r / c))
+    return BP * np.exp(np.log(precisions).sum() * (1/n))
