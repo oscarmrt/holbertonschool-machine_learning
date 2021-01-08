@@ -4,7 +4,7 @@ to calculate the attention for machine translation"""
 import tensorflow as tf
 
 
-class SelfAttention(tensorflow.keras.layers.Layer):
+class SelfAttention(tf.keras.layers.Layer):
     """Class SelfAttention"""
     def __init__(self, units):
         """Class constructor"""
