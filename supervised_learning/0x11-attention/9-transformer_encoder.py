@@ -22,9 +22,10 @@ class Encoder(tf.keras.layers.Layer):
     """Public instance method that returns a tensor of shape
     (batch, input_seq_len, dm) containing the encoder output"""
     seq_len = tf.shape(x)[1]
+    position = tf.cast(self.positional_encoding, dtype=tf.float32)
     x = self.embedding(x)
     x *= tf.math.sqrt(tf.cast(self.dm, tf.float32))
-    x += tf.cast(self.positional_encoding, dtype=tf.float32)[:seq_len]
+    x += position[:seq_len]
     x = self.dropout(x, training=training)
     for i in range(self.N):
         x = self.blocks[i](x, training, mask)
