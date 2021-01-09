@@ -18,7 +18,7 @@ class Encoder(tf.keras.layers.Layer):
         self.blocks = [EncoderBlock(dm, h, hidden, drop_rate) for i in range(N)]
         self.dropout = tf.keras.layers.Dropout(drop_rate)
 
-    call(self, x, training, mask):
+    def call(self, x, training, mask):
     """Public instance method that returns a tensor of shape
     (batch, input_seq_len, dm) containing the encoder output"""
     seq_len = tf.shape(x)[1]
