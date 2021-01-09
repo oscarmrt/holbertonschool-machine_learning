@@ -23,8 +23,7 @@ class Transformer(tf.keras.Model):
         (batch,target_seq_len, target_vocab) containing the
         transformer output"""
         enc_output = self.encoder(inputs, training, encoder_mask)
-        dec_output, attention_weights = self.decoder(target, enc_output,
-                                                     training, look_ahead_mask,
-                                                     decoder_mask)
+        dec_output = self.decoder(target, enc_output, training,
+                                  look_ahead_mask, decoder_mask)
         final_output = self.linear(dec_output)
         return final_output
