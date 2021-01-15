@@ -9,10 +9,10 @@ class Dataset():
     def __init__(self):
         """class constructor"""
         data_train = tfds.load('ted_hrlr_translate/pt_to_en',
-                                    split='train', as_supervised=True)
+                               split='train', as_supervised=True)
         data_valid = tfds.load('ted_hrlr_translate/pt_to_en',
-                                    split='validation', as_supervised=True)
-        tokenizer_pt, tokenizer_en = self.tokenize_dataset(self.data_train)
+                               split='validation', as_supervised=True)
+        tokenizer_pt, tokenizer_en = self.tokenize_dataset(data_train)
         self.tokenizer_pt = tokenizer_pt
         self.tokenizer_en = tokenizer_en
         self.data_train = data_train.map(self.tf_encode)
