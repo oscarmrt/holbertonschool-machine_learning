@@ -12,24 +12,24 @@ class Dataset():
             """Function that uses the filter method"""
             return tf.logical_and(tf.size(x) <= max_length,
                                   tf.size(y) <= max_length)
-    examples, metadata = tfds.load('ted_hrlr_translate/pt_to_en',
-                                   with_info=True,
-                                   as_supervised=True)
-    data_train, data_valid = examples['train'], examples['validation']
-    tokenizer_pt, tokenizer_en = self.tokenize_dataset(data_train)
-    self.tokenizer_pt = tokenizer_pt
-    self.tokenizer_en = tokenizer_en
-    data_train = data_train.map(self.tf_encode)
-    data_train = data_train.filter(filter_max_length)
-    data_train = data_train.cache()
-    BUFFER_SIZE = metadata.splits['train'].num_examples
-    data_train = data_train.shuffle(BUFFER_SIZE).\
-        padded_batch(batch_size, padded_shapes=([None], [None]))
-    self.data_train = data_train.prefetch(tf.data.experimental.AUTOTUNE)
-    data_valid = data_valid.map(self.tf_encode)
-    data_valid = data_valid.filter(filter_max_length).\
-        padded_batch(batch_size, padded_shapes=([None], [None]))
-    self.data_valid = data_valid
+        examples, metadata = tfds.load('ted_hrlr_translate/pt_to_en',
+                                       with_info=True,
+                                       as_supervised=True)
+        data_train, data_valid = examples['train'], examples['validation']
+        tokenizer_pt, tokenizer_en = self.tokenize_dataset(data_train)
+        self.tokenizer_pt = tokenizer_pt
+        self.tokenizer_en = tokenizer_en
+        data_train = data_train.map(self.tf_encode)
+        data_train = data_train.filter(filter_max_length)
+        data_train = data_train.cache()
+        BUFFER_SIZE = metadata.splits['train'].num_examples
+        data_train = data_train.shuffle(BUFFER_SIZE).\
+            padded_batch(batch_size, padded_shapes=([None], [None]))
+        self.data_train = data_train.prefetch(tf.data.experimental.AUTOTUNE)
+        data_valid = data_valid.map(self.tf_encode)
+        data_valid = data_valid.filter(filter_max_length).\
+            padded_batch(batch_size, padded_shapes=([None], [None]))
+        self.data_valid = data_valid
 
     def tokenize_dataset(self, data):
         """Instance method that creates sub-word tokenizers for our dataset"""
