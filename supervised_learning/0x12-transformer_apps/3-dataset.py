@@ -24,11 +24,11 @@ class Dataset():
     data_train = data_train.cache()
     BUFFER_SIZE = metadata.splits['train'].num_examples
     data_train = data_train.shuffle(BUFFER_SIZE).\
-                 padded_batch(batch_size, padded_shapes=([None], [None]))
+        padded_batch(batch_size, padded_shapes=([None], [None]))
     self.data_train = data_train.prefetch(tf.data.experimental.AUTOTUNE)
     data_valid = data_valid.map(self.tf_encode)
     data_valid = data_valid.filter(filter_max_length).\
-                 padded_batch(batch_size, padded_shapes=([None], [None]))
+        padded_batch(batch_size, padded_shapes=([None], [None]))
     self.data_valid = data_valid
 
     def tokenize_dataset(self, data):
