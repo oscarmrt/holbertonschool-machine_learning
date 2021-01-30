@@ -22,7 +22,7 @@ document to answer a question"""
                       [1] * (len(reference_tokens) + 1))
     input_word_ids, input_mask, input_type_ids = map(lambda t: tf.expand_dims(
         tf.convert_to_tensor(t, dtype=tf.int32), 0),
-                                                     (input_word_ids, input_mask, input_type_ids))
+        (input_word_ids, input_mask, input_type_ids))
     outputs = model([input_word_ids, input_mask, input_type_ids])
     short_start = tf.argmax(outputs[0][0][1:]) + 1
     short_end = tf.argmax(outputs[1][0][1:]) + 1
