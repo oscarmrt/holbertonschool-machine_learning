@@ -3,6 +3,7 @@
 import numpy as np
 import gym
 
+
 def episode_gen(env, policy, max_steps):
     """Function that generates an episode"""
     episode = [[], []]
