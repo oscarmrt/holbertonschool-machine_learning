@@ -5,6 +5,7 @@ import requests
 import sys
 import time
 
+
 if __name__ == '__main__':
     url = "https://api.spacexdata.com/v4/launches"
     r = requests.get(url)
