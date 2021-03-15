@@ -1,0 +1,1 @@
+This directory is focused on Pipeline projects.
